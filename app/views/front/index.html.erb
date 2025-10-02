@@ -1,0 +1,61 @@
+<div class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center h-16">
+      <div class="text-2xl font-bold text-indigo-600">ClientManager</div>
+      <nav class="space-x-6 hidden md:flex">
+        <a href="#" class="text-gray-600 hover:text-indigo-600 font-medium">Home</a>
+        <a href="#" class="text-gray-600 hover:text-indigo-600 font-medium">Funcionalidades</a>
+        <a href="#" class="text-gray-600 hover:text-indigo-600 font-medium">Preços</a>
+        <a href="#" class="text-gray-600 hover:text-indigo-600 font-medium">Contato</a>
+      </nav>
+      <div class="flex space-x-4">
+        <a href="/users/sign_up" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-500 font-medium">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="flex-1 flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white pt-24 pb-32">
+    <div class="max-w-4xl text-center px-6">
+      <h1 class="text-5xl font-bold mb-6">Gerencie seus clientes de forma inteligente</h1>
+      <p class="text-xl mb-8">Uma plataforma moderna para organizar contatos, acompanhar vendas e aumentar sua produtividade.</p>
+      <a href="/users/sign_up" class="bg-white text-indigo-600 px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-gray-100">Crie sua conta grátis</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Por que escolher o ClientManager?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white shadow-lg rounded-2xl p-8 hover:shadow-2xl transition">
+        <div class="text-indigo-600 text-4xl mb-4">📊</div>
+        <h3 class="text-xl font-bold mb-3">Painel Intuitivo</h3>
+        <p class="text-gray-600">Visualize métricas e relatórios claros sobre sua base de clientes.</p>
+      </div>
+      <div class="bg-white shadow-lg rounded-2xl p-8 hover:shadow-2xl transition">
+        <div class="text-indigo-600 text-4xl mb-4">⚡</div>
+        <h3 class="text-xl font-bold mb-3">Automatizações</h3>
+        <p class="text-gray-600">Automatize tarefas repetitivas e economize tempo no seu dia a dia.</p>
+      </div>
+      <div class="bg-white shadow-lg rounded-2xl p-8 hover:shadow-2xl transition">
+        <div class="text-indigo-600 text-4xl mb-4">🔒</div>
+        <h3 class="text-xl font-bold mb-3">Segurança</h3>
+        <p class="text-gray-600">Dados protegidos com criptografia e autenticação moderna.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Call to Action -->
+  <section class="bg-indigo-600 py-20 text-white text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">Pronto para revolucionar sua gestão de clientes?</h2>
+    <p class="text-lg mb-8">Comece agora mesmo e descubra como simplificar seu trabalho.</p>
+    <a href="/users/sign_up" class="bg-white text-indigo-600 px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-gray-100">Criar Conta Grátis</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+    <p>&copy; <%= Date.current.year %> ClientManager. Todos os direitos reservados.</p>
+  </footer>
+</div>
