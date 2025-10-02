@@ -65,6 +65,6 @@ class UserProfilesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_profile_params
-      params.expect(user_profile: [ :name, :email, :birthdate, :phone, :gender, :user_id ])
+      params.require(user_profile:).permit(:name, :email, :birthdate, :phone, :gender, :user_id)
     end
 end
