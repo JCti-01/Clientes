@@ -8,3 +8,22 @@
 
   <%= button_to "Destroy this client", @client, method: :delete %>
 </div>
+<h2 class="text-xl font-bold mt-6 mb-4">Endereços</h2>
+
+<%= link_to "Novo Endereço", new_client_client_address_path(@client), class: "px-3 py-1 bg-blue-600 text-white rounded" %>
+
+<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <% @client.client_addresses.each do |address| %>
+    <div class="p-4 border rounded shadow">
+      <p><strong>Endereço:</strong> <%= address.address %>, <%= address.number %></p>
+      <p><strong>Cidade:</strong> <%= address.city %> - <%= address.state %></p>
+      <p><strong>CEP:</strong> <%= address.zip %></p>
+      <p><strong>Referência:</strong> <%= address.reference %></p>
+
+      <div class="flex gap-2 mt-2">
+        <%= link_to "Editar", edit_client_client_address_path(@client, address), class: "text-yellow-600" %>
+        <%= link_to "Deletar", client_client_address_path(@client, address), method: :delete, data: { confirm: "Tem certeza?" }, class: "text-red-600" %>
+      </div>
+    </div>
+  <% end %>
+</div>

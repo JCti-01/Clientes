@@ -1,70 +1,58 @@
 class ClientAddressesController < ApplicationController
-  before_action :set_client_address, only: %i[ show edit update destroy ]
+  before_action :set_client
+  before_action :set_client_address, only: %i[edit update destroy]
 
-  # GET /client_addresses or /client_addresses.json
+  # GET /clients/:client_id/client_addresses
   def index
-    @client_addresses = ClientAddress.all
+    @client_addresses = @client.client_addresses
   end
 
-  # GET /client_addresses/1 or /client_addresses/1.json
-  def show
-  end
-
-  # GET /client_addresses/new
+  # GET /clients/:client_id/client_addresses/new
   def new
-    @client_address = ClientAddress.new
+    @client_address = @client.client_addresses.build
   end
 
-  # GET /client_addresses/1/edit
+  # POST /clients/:client_id/client_addresses
+  def create
+    @client_address = @client.client_addresses.build(client_address_params)
+
+    if @client_address.save
+      redirect_to client_path(@client), notice: "Endereço criado com sucesso."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # GET /clients/:client_id/client_addresses/:id/edit
   def edit
   end
 
-  # POST /client_addresses or /client_addresses.json
-  def create
-    @client_address = ClientAddress.new(client_address_params)
-
-    respond_to do |format|
-      if @client_address.save
-        format.html { redirect_to @client_address, notice: "Client address was successfully created." }
-        format.json { render :show, status: :created, location: @client_address }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @client_address.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /client_addresses/1 or /client_addresses/1.json
+  # PATCH/PUT /clients/:client_id/client_addresses/:id
   def update
-    respond_to do |format|
-      if @client_address.update(client_address_params)
-        format.html { redirect_to @client_address, notice: "Client address was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @client_address }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @client_address.errors, status: :unprocessable_entity }
-      end
+    if @client_address.update(client_address_params)
+      redirect_to client_path(@client), notice: "Endereço atualizado com sucesso."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /client_addresses/1 or /client_addresses/1.json
+  # DELETE /clients/:client_id/client_addresses/:id
   def destroy
-    @client_address.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to client_addresses_path, notice: "Client address was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    @client_address.destroy
+    redirect_to client_path(@client), notice: "Endereço deletado com sucesso."
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_client_address
-      @client_address = ClientAddress.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def client_address_params
-      params.require(:client_address).permit(:address, :number, :city, :state, :zip, :reference, :client_id)
-    end
+  def set_client
+    @client = Client.find(params[:client_id])
+  end
+
+  def set_client_address
+    @client_address = @client.client_addresses.find(params[:id])
+  end
+
+  def client_address_params
+    params.require(:client_address).permit(:address, :number, :city, :state, :zip, :reference)
+  end
 end

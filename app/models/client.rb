@@ -1,4 +1,4 @@
 class Client < ApplicationRecord
   belongs_to :user
-  has_many :client_address, dependent: :destroy
+  has_many :client_addresses, dependent: :destroy
 end

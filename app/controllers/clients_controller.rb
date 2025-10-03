@@ -3,7 +3,7 @@ class ClientsController < ApplicationController
 
   # GET /clients or /clients.json
   def index
-    @clients = Client.all
+    @clients = current_user.clients
   end
 
   # GET /clients/1 or /clients/1.json
@@ -21,11 +21,11 @@ class ClientsController < ApplicationController
 
   # POST /clients or /clients.json
   def create
-    @client = Client.new(client_params)
+    @client = current_user.clients.build(client_params)
 
     respond_to do |format|
       if @client.save
-        format.html { redirect_to @client, notice: "Client was successfully created." }
+        format.html { redirect_to clients_path, notice: "Client was successfully created." }
         format.json { render :show, status: :created, location: @client }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class ClientsController < ApplicationController
   def update
     respond_to do |format|
       if @client.update(client_params)
-        format.html { redirect_to @client, notice: "Client was successfully updated.", status: :see_other }
+        format.html { redirect_to clients_path, notice: "Client was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -65,6 +65,6 @@ class ClientsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def client_params
-      params.require(client:).permit(:name, :birthdate, :phone, :description, :active, :user_id)
+      params.require(:client).permit(:name, :birthdate, :phone, :description, :active)
     end
 end
