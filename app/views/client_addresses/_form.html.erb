@@ -1,52 +1,70 @@
-<%= form_with(model: [@client, client_address]) do |form| %>
-  <% if client_address.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(client_address.errors.count, "error") %> prohibited this client_address from being saved:</h2>
+<div class="content max-w-4xl mx-auto mt-10">
 
-      <ul>
-        <% client_address.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="bg-white rounded-2xl shadow-lg">
+    <!-- Header -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+      <h2 class="text-2xl font-bold">Endereço de: <span class="text-blue-600"><%= @client.name %></span></h2>
+
+      <%= link_to "Voltar", client_path(@client), class: "bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition-colors text-sm font-medium" %>
     </div>
-  <% end %>
 
-  <div>
-    <%= form.label :address, style: "display: block" %>
-    <%= form.textarea :address %>
-  </div>
+    <!-- Conteúdo do formulário -->
+    <div class="p-6">
+      <%= form_with(model: [@client, client_address], local: true) do |form| %>
 
-  <div>
-    <%= form.label :number, style: "display: block" %>
-    <%= form.text_field :number %>
-  </div>
+        <% if client_address.errors.any? %>
+          <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded mb-4">
+            <h4 class="font-semibold mb-2">
+              <%= pluralize(client_address.errors.count, "erro") %> impediram este endereço de ser salvo:
+            </h4>
+            <ul class="list-disc list-inside">
+              <% client_address.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-  <div>
-    <%= form.label :city, style: "display: block" %>
-    <%= form.textarea :city %>
-  </div>
+        <div class="row">
+          <div>
+            <label class="block mb-1 w-28 font-medium text-gray-700" for="client_address_zip">CEP</label>
+            <%= form.text_field :zip, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
+        </div>
 
-  <div>
-    <%= form.label :state, style: "display: block" %>
-    <%= form.textarea :state %>
-  </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_city">Cidade</label>
+            <%= form.text_field :city, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
 
-  <div>
-    <%= form.label :zip, style: "display: block" %>
-    <%= form.textarea :zip %>
-  </div>
+          <div>
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_state">Estado</label>
+            <%= form.text_field :state, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
 
-  <div>
-    <%= form.label :reference, style: "display: block" %>
-    <%= form.textarea :reference %>
-  </div>
+          <div>
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_address">Endereço</label>
+            <%= form.text_area :address, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" %>
+          </div>
 
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
-  </div>
+          <div>
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_number">Número</label>
+            <%= form.text_field :number, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
 
-  <div>
-    <%= form.submit %>
+          <div class="md:col-span-2">
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_reference">Referência</label>
+            <%= form.text_area :reference, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" %>
+          </div>
+        </div>
+
+        <!-- Botão Submit -->
+        <div class="mt-6">
+          <%= form.submit "Salvar Endereço", class: "w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors" %>
+        </div>
+
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>

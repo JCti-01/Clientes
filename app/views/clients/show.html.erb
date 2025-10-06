@@ -1,29 +1,61 @@
-<p style="color: green"><%= notice %></p>
+<div class="content max-w-4xl mx-auto mt-10">
 
-<%= render @client %>
-
-<div>
-  <%= link_to "Edit this client", edit_client_path(@client) %> |
-  <%= link_to "Back to clients", clients_path %>
-
-  <%= button_to "Destroy this client", @client, method: :delete %>
-</div>
-<h2 class="text-xl font-bold mt-6 mb-4">Endereços</h2>
-
-<%= link_to "Novo Endereço", new_client_client_address_path(@client), class: "px-3 py-1 bg-blue-600 text-white rounded" %>
-
-<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-  <% @client.client_addresses.each do |address| %>
-    <div class="p-4 border rounded shadow">
-      <p><strong>Endereço:</strong> <%= address.address %>, <%= address.number %></p>
-      <p><strong>Cidade:</strong> <%= address.city %> - <%= address.state %></p>
-      <p><strong>CEP:</strong> <%= address.zip %></p>
-      <p><strong>Referência:</strong> <%= address.reference %></p>
-
-      <div class="flex gap-2 mt-2">
-        <%= link_to "Editar", edit_client_client_address_path(@client, address), class: "text-yellow-600" %>
-        <%= link_to "Deletar", client_client_address_path(@client, address), method: :delete, data: { confirm: "Tem certeza?" }, class: "text-red-600" %>
-      </div>
+  <!-- Notice -->
+  <% if notice %>
+    <div class="bg-green-50 border border-green-200 text-green-700 p-4 rounded mb-6">
+      <p><%= notice %></p>
     </div>
   <% end %>
+  <div class="mb-3">
+    <%= link_to "Voltar", clients_path, class: "px-3 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition-colors" %>
+  </div>
+  <!-- Cliente -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex gap-2 items-center">
+        <h2 class="text-2xl font-bold"><%= @client.name %></h2>
+        <span class="h-4 w-4 rounded-full inline-block <%= @client.active ? 'bg-green-500' : 'bg-red-500' %>"></span>
+      </div>
+      <div class="flex gap-2">
+        <%= link_to "Editar Cliente", edit_client_path(@client), class: "px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition-colors" %>
+        <%= button_to "Deletar", @client, method: :delete, data: { confirm: "Tem certeza?" }, class: "px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors" %>
+      </div>
+    </div>
+    <div class="flex gap-3 items-center">
+      <div>
+        <% if @client.client_image.attached? %>
+              <div class="mt-4">
+                <%= image_tag @client.client_image, class: "rounded-full shadow w-38 h-38 object-cover" %>
+              </div>
+        <% end %>
+      </div>
+      <div>
+        <p class="text-gray-700"><strong>Data de Nascimento:</strong> <%= @client.birthdate %></p>
+        <p class="text-gray-700"><strong>Telefone:</strong> <%= @client.phone %></p>
+        <p class="text-gray-700"><strong>Descrição:</strong> <%= @client.description %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Endereços -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">Endereços</h2>
+    <%= link_to "Novo Endereço", new_client_client_address_path(@client), class: "px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% @client.client_addresses.each do |address| %>
+      <div class="p-4 border rounded-2xl shadow hover:shadow-lg transition-shadow">
+        <p><strong>Endereço:</strong> <%= address.address %>, <%= address.number %></p>
+        <p><strong>Cidade:</strong> <%= address.city %> - <%= address.state %></p>
+        <p><strong>CEP:</strong> <%= address.zip %></p>
+        <p><strong>Referência:</strong> <%= address.reference %></p>
+
+        <div class="flex gap-2 mt-4">
+          <%= link_to "Editar", edit_client_client_address_path(@client, address), class: "px-2 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition-colors text-sm" %>
+          <%= link_to "Deletar", client_client_address_path(@client, address), method: :delete, data: { confirm: "Tem certeza?" }, class: "px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,0 +1,17 @@
+<!-- app/views/shared/back/_header.html.erb -->
+<header class="w-full bg-blue-900 text-white shadow-md">
+  <div class="flex items-center justify-between px-6 py-4">
+    <!-- Logo ou título -->
+    <div class="flex items-center space-x-2">
+      <i class="fa fa-users text-white text-xl"></i>
+      <h1 class="text-lg font-semibold">Painel de Clientes</h1>
+    </div>
+
+    <!-- Botão de logout -->
+    <div>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, 
+          data: { turbo_confirm: "Tem certeza que deseja sair?" },
+          class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition duration-150 ease-in-out" %>
+    </div>
+  </div>
+</header>
