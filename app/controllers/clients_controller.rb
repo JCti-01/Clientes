@@ -4,6 +4,16 @@ class ClientsController < ApplicationController
   # GET /clients or /clients.json
   def index
     @clients = current_user.clients
+    if params[:query].present?
+      @clients = current_user.clients.where("name ILIKE ?", "%#{params[:query]}%")
+    else
+      @clients = current_user.clients.all
+    end
+  
+    respond_to do |format|
+      format.html
+      format.turbo_stream 
+    end
   end
 
   # GET /clients/1 or /clients/1.json

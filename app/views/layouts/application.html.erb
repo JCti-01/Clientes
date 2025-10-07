@@ -23,19 +23,22 @@
 
   <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
     <!-- Header -->
-    <%= render "shared/back/header" %>
+      <% if devise_controller? %>
+          <%= yield %>
+      <% else %>
+        <!-- Layout normal com header e sidebar -->
+        <%= render "shared/back/header" %>
 
-    <!-- Main layout -->
-    <div class="flex flex-1">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-gray-800 text-white hidden md:block">
-        <%= render "shared/back/side_bar" %>
-      </aside>
+        <div class="flex flex-1 min-h-screen">
+          <aside class="w-64 bg-gray-800 text-white hidden md:block">
+            <%= render "shared/back/side_bar" %>
+          </aside>
 
-      <!-- Conteúdo -->
-      <main class="flex-1 p-6 overflow-x-hidden">
-        <%= yield %>
-      </main>
+          <main class="flex-1 p-6 overflow-x-hidden">
+            <%= yield %>
+          </main>
+        </div>
+      <% end %>
     </div>
   </body>
 </html>
