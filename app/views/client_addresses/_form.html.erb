@@ -1,17 +1,14 @@
 <div class="content max-w-4xl mx-auto mt-10">
-
   <div class="bg-white rounded-2xl shadow-lg">
-    <!-- Header -->
     <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-      <h2 class="text-2xl font-bold">Endereço de: <span class="text-blue-600"><%= @client.name %></span></h2>
-
+      <h2 class="text-2xl font-bold">
+        Endereço de: <span class="text-blue-600"><%= @client.name %></span>
+      </h2>
       <%= link_to "Voltar", client_path(@client), class: "bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition-colors text-sm font-medium" %>
     </div>
 
-    <!-- Conteúdo do formulário -->
     <div class="p-6">
       <%= form_with(model: [@client, client_address], local: true) do |form| %>
-
         <% if client_address.errors.any? %>
           <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded mb-4">
             <h4 class="font-semibold mb-2">
@@ -25,46 +22,122 @@
           </div>
         <% end %>
 
-        <div class="row">
-          <div>
-            <label class="block mb-1 w-28 font-medium text-gray-700" for="client_address_zip">CEP</label>
-            <%= form.text_field :zip, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-          </div>
+        <div class="col-span-12 sm:col-span-3 mb-4">
+          <label class="block mb-1 font-medium text-gray-700" for="client_address_zip">CEP</label>
+          <%= form.text_field :zip, id: "zip_field",
+                class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400",
+                placeholder: "00.000-000", maxlength: 10 %>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div>
-            <label class="block mb-1 font-medium text-gray-700" for="client_address_city">Cidade</label>
-            <%= form.text_field :city, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-12 sm:col-span-4">
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_country">País</label>
+            <%= form.select :country, ["Brasil"], {}, id: "country_field", class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
 
-          <div>
+          <div class="col-span-12 sm:col-span-4">
             <label class="block mb-1 font-medium text-gray-700" for="client_address_state">Estado</label>
-            <%= form.text_field :state, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            <%= form.select :state, [
+                  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
+                  "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"
+                ], { prompt: "Selecione o estado" }, id: "state_field", class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
 
-          <div>
+          <div class="col-span-12 sm:col-span-4">
+            <label class="block mb-1 font-medium text-gray-700" for="client_address_city">Cidade</label>
+            <%= form.select :city, [], { prompt: "Selecione a cidade" }, id: "city_field", class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
+
+          <div class="col-span-12 sm:col-span-9">
             <label class="block mb-1 font-medium text-gray-700" for="client_address_address">Endereço</label>
-            <%= form.text_area :address, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" %>
+            <%= form.text_area :address, id: "address_field", class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" %>
           </div>
 
-          <div>
+          <div class="col-span-12 sm:col-span-3">
             <label class="block mb-1 font-medium text-gray-700" for="client_address_number">Número</label>
             <%= form.text_field :number, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
 
-          <div class="md:col-span-2">
+          <div class="col-span-12">
             <label class="block mb-1 font-medium text-gray-700" for="client_address_reference">Referência</label>
             <%= form.text_area :reference, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" %>
           </div>
+
+          <div class="col-span-12">
+            <label class="inline-flex items-center mt-2">
+              <%= form.check_box :active, class: "mr-2" %>
+              <span class="text-gray-700 font-medium">Ativo</span>
+            </label>
+          </div>
         </div>
 
-        <!-- Botão Submit -->
         <div class="mt-6">
           <%= form.submit "Salvar Endereço", class: "w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors" %>
         </div>
-
       <% end %>
     </div>
   </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const zipField = document.getElementById("zip_field");
+  const addressField = document.getElementById("address_field");
+  const cityField = document.getElementById("city_field");
+  const stateField = document.getElementById("state_field");
+
+  // Formata CEP xx.xxx-xxx
+  function formatCEP(value) {
+    let v = value.replace(/\D/g, ""); // remove tudo que não é número
+    v = v.substring(0, 8); 
+    if (v.length > 5) {
+      v = v.replace(/^(\d{2})(\d{3})(\d{0,3})$/, "$1.$2-$3"); // xx.xxx-xxx
+    } else if (v.length > 2) {
+      v = v.replace(/^(\d{2})(\d{0,3})$/, "$1.$2"); 
+    }
+    return v;
+  }
+
+  // Atualiza CEP via input
+  zipField.addEventListener("input", () => {
+    zipField.value = formatCEP(zipField.value);
+
+    const cepNumbers = zipField.value.replace(/\D/g, "");
+    if (cepNumbers.length === 8) {
+      fetch(`https://viacep.com.br/ws/${cepNumbers}/json/`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.erro) {
+            addressField.value = data.logradouro || "";
+            stateField.value = data.uf || "";
+
+            // Preenche cidade
+            cityField.innerHTML = `<option value="${data.localidade}" selected>${data.localidade}</option>`;
+          } else {
+            alert("CEP não encontrado.");
+          }
+        })
+        .catch(e => console.error("Erro ViaCEP:", e));
+    }
+  });
+
+  // Atualiza select de cidades via IBGE ao selecionar estado
+  stateField.addEventListener("change", () => {
+    const uf = stateField.value;
+    cityField.innerHTML = '<option value="">Selecione a cidade</option>';
+    if (!uf) return;
+
+    // Busca cidades do estado selecionado
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
+      .then(res => res.json())
+      .then(cities => {
+        cities.forEach(c => {
+          const option = document.createElement("option");
+          option.value = c.nome;
+          option.text = c.nome;
+          cityField.appendChild(option);
+        });
+      })
+      .catch(err => console.error("Erro ao buscar cidades:", err));
+  });
+});
+</script>

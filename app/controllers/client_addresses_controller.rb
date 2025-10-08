@@ -53,6 +53,6 @@ class ClientAddressesController < ApplicationController
   end
 
   def client_address_params
-    params.require(:client_address).permit(:address, :number, :city, :state, :zip, :reference)
+    params.require(:client_address).permit(:address, :number, :city, :state, :zip, :reference, :country, :active)
   end
 end
