@@ -1,80 +1,59 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: %i[ show edit update destroy ]
+  before_action :set_client, only: [:show, :edit, :update, :destroy]
 
-  # GET /clients or /clients.json
+  # GET /clients
   def index
     @clients = current_user.clients
     if params[:query].present?
-      @clients = current_user.clients.where("name ILIKE ?", "%#{params[:query]}%")
-    else
-      @clients = current_user.clients.all
-    end
-  
-    respond_to do |format|
-      format.html
-      format.turbo_stream 
+      @clients = @clients.where("name ILIKE ?", "%#{params[:query]}%")
     end
   end
 
-  # GET /clients/1 or /clients/1.json
+  # GET /clients/:id
   def show
   end
 
   # GET /clients/new
   def new
-    @client = Client.new
+    @client = current_user.clients.build
   end
 
-  # GET /clients/1/edit
+  # POST /clients
+  def create
+    @client = current_user.clients.build(client_params)
+    if @client.save
+      redirect_to clients_path, notice: "Cliente criado com sucesso."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # GET /clients/:id/edit
   def edit
   end
 
-  # POST /clients or /clients.json
-  def create
-    @client = current_user.clients.build(client_params)
-
-    respond_to do |format|
-      if @client.save
-        format.html { redirect_to clients_path, notice: "Client was successfully created." }
-        format.json { render :show, status: :created, location: @client }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /clients/1 or /clients/1.json
+  # PATCH/PUT /clients/:id
   def update
-    respond_to do |format|
-      if @client.update(client_params)
-        format.html { redirect_to clients_path, notice: "Client was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @client }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
-      end
+    if @client.update(client_params)
+      redirect_to clients_path, notice: "Cliente atualizado com sucesso."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /clients/1 or /clients/1.json
+  # DELETE /clients/:id
   def destroy
-    @client.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to clients_path, notice: "Client was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    @client.destroy
+    redirect_to clients_path, notice: "Cliente deletado com sucesso."
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_client
-      @client = Client.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def client_params
-      params.require(:client).permit(:name, :birthdate, :phone, :description, :active, :client_image)
-    end
+  def set_client
+    @client = Client.find(params[:id])
+  end
+
+  def client_params
+    params.require(:client).permit(:name, :birthdate, :phone, :description, :active, :client_image)
+  end
 end
