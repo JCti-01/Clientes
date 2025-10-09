@@ -1,6 +1,5 @@
 <div class="content max-w-4xl mx-auto mt-10">
   <div class="bg-white rounded-2xl shadow-lg">
-    <!-- Header -->
     <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
       <h2 class="text-2xl font-bold">
         <%= client.new_record? ? "Novo Cliente" : "Editar Cliente" %>
@@ -8,7 +7,6 @@
       <%= link_to "Voltar", client, class: "bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition-colors text-sm font-medium" %>
     </div>
 
-    <!-- Conteúdo do formulário -->
     <div class="p-6">
       <%= form_with(model: client, local: true) do |form| %>
 
@@ -27,7 +25,6 @@
 
         <!-- Upload de imagem -->
         <div class="mb-6">
-         
           <% if client.client_image.attached? %>
             <div class="mt-4">
               <%= image_tag client.client_image, class: "rounded-full shadow w-38 h-38 object-cover" %>
@@ -37,10 +34,8 @@
               <img src="/images/no-image.jpg" alt="Sem imagem" class="rounded-full shadow w-24 h-24 object-cover">
             </div>
           <% end %>
-
            <label class="block mb-2 font-medium text-gray-700" for="client_client_image">Foto do Cliente (50x50)</label>
           <%= form.file_field :client_image, accept: "image/*", class: "block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" %>
-
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -54,9 +49,9 @@
             <%= form.date_field :birthdate, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
 
-          <div class="col-span-6 md:col-span-2">
+          <div data-controller="mask-phone" class="col-span-6 md:col-span-2">
             <label class="block mb-1 font-medium text-gray-700" for="client_phone">Telefone</label>
-            <%= form.text_field :phone, class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            <%= form.text_field :phone, placeholder: "(00) 0 0000-0000",  class: "w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400", data: { "mask-phone-target": "input" } %>
           </div>
 
           <div class="md:col-span-2">
@@ -73,7 +68,6 @@
         <div class="mt-6">
           <%= form.submit client.new_record? ? "Criar Cliente" : "Atualizar Cliente", class: "w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors" %>
         </div>
-
       <% end %>
     </div>
   </div>

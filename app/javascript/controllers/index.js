@@ -9,3 +9,6 @@ application.register("address-search", AddressSearchController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import MaskPhoneController from "./mask_phone_controller"
+application.register("mask-phone", MaskPhoneController)
